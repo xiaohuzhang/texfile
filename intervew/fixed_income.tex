@@ -1,0 +1,888 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage{amsfonts,amssymb,amsmath}
+\usepackage{natbib}
+\usepackage{fullpage}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{anysize,graphicx}
+\title {interview questions and preparation}
+\begin{document}
+ \pagestyle{empty} \setlength{\textwidth}{28cm}
+ \setlength{\tabcolsep}{0.1cm}
+%%%PREAMBLE FINISHES IN HERE.
+\marginsize{2cm}{1cm}{1cm}{1cm} \setlength{\baselineskip}{19pt}
+
+
+\section{Fixed Income}
+\begin{centering}
+\em{Fixed income interview prepared\\
+Notes mainly taking from FRM lecture}
+\end{centering}
+
+First, fixed income security in general are discuss about two category,
+the discount rate and the future cash flow.discount rate can be separated into two side:
+the spot rate $R(0,t)$ and the $Y$ yield to maturity. spot rate means in each cash flow,
+ we use various annualized rate to discount the cash flow. And if we plot the spot rate,
+we can get the yield curve as a function of time and the spot rate. Yield is something
+we apply the same discount rate to each cash flow.\\
+In other words, yield is sort of like the average of the spot rate, since spot rate also
+taking account the time value. But there is a problem exists in spot rate and yield to maturity,
+that is we can not guarantee fixed income instrument will guarantee to have the
+same cash flow over give period.The cash flow is not guaranteed.
+We try to use something similar to delta in option pricing equation to describe the
+relation between bond price $P$ and the yield $y$ over time. if we use $dp/dy$ similar
+to delta in option pricing describe the change of bond value over the change of yield.
+ We named $dp/dy$ as dollar duration.
+\begin{equation}
+DV01=Dollar Duration\times 0.0001
+\end{equation}
+But there is a problem in this simple formula,because bond is not like option and stock,
+ option and stock's dollar value are in same scalar.Bond can have various notion value,
+and yield usually only goes up and down for several base points.\\
+Therefore, to solve this problem, we need change the scale of duration. We use $dp/p/dy$ the change of bond price
+over the change of yield, named modified duration. Modified duration in other way can be interpreted as
+the bond return adjusted by the change of yield. There is a condition for modelled duration to  valid,
+we must guarantee that the cash flow stream is complete and people can hold the bond upon maturity.
+For instance, for option embedded bond, we have to use another way to measure sensitivity which is effective
+duration
+\begin{equation}
+D_{eff} =\frac{P_+-P_-}{P_0*2\Delta y}\
+ \end{equation}
+
+The reason for $2*\Delta y$ is because the convexity exists. It means, I take the future bond price into two state, goes up or goes down. This can be treat as a substitute for modified duration.Another duration is called maclury duration. Machulary duration tells the average time collecting the present value of cash flow. if we did some simple math:
+$$ Dollar Duration=\frac{\partial p}{\partial y}= -\frac{c}{(1+y)^2} -2 \times \frac{c}{(1+y)^3}-3\times\frac{(c+Par)}{(1+y)^4}\\
+$$
+
+$$
+Modified Duration=\frac{-1}{(1+y)}\times \frac{ \left\{\frac{c}{1+y}-\frac{(2c)}{(1+y)^2}+\frac{3(c+par)}{(1+y)^3}\right\}}{p}
+$$
+$$
+Modifed Duration=\frac{\partial p}{\partial y}\frac{1}{p}=\frac{\partial p}{p}\frac{1}{\partial y}=\frac{Dollar duration}{p}
+$$
+It can be viewed as adjust the dollar duration by the notional value of bond price, and adjust the bond return by its yield.\\
+$$ Macllay Duration=\frac{ \left\{\frac{c}{1+y}-\frac{(2c)}{(1+y)^2}+\frac{3(c+par)}{(1+y)^3}\right\}}{p}\\
+=Modified Duration \times (1+y)
+$$
+\begin{equation}
+Macllay Duration=Modified Duration \times (1+y)
+\end{equation}
+Therefore, we can see that modified duration $\times (1+y)$ is the MAC duration.
+\subsection{IRS interest rate swap}
+{\em Notes taking from dan's little book and hull}: Value to a fix swap payer = Sum of the difference between fixed swap rate and forward rate, discounted at risk free rate, for each of the accrual period between present and maturity, times the notional amount.\\
+It is nothing but a certain party receives fixed and pays floating then it can be considered equivalent to the party having a long position in a fixed rate bond and a short position in a floating rate bond. The value of the swap at any time to the party is the difference in value of these bonds.\\
+The fixed rate bond will have greater interest rate risk simply because it has the same maturity as the life of the swap whereas the floating rate bond can only be considered to have maturity until the next reset date when the interest rate is revised. Thus the duration of the fixed rate bond will be greater than the floating rate bond thus resulting in the former having greater interest rate risk.\\
+\subsection{Valuation of IRS and swap rate}
+IRS valuation can be use two ways to evaluate, one way is treat interest rate swap as a portfoilo of bonds, the other way is treat as a portfolio of FRA. In term of bond, we can treat swap (floating payer) as long a fixed rate bond and short a floating rate bond. So the swap value is $V_swap=P_fix-P_float$, and in other method it also holds. The value of the fixed rate bond can be pricing use the discounted cash flow method. The floating bond make payment once can be treat as $ V_{float}=e^{(-rt^*)}(L+k^*)$, $t^*$ is the time when swap happens, and $k^*$ is the libor rate on a given maturity, eg. six month libor rate. And discount back the entire payment back to time 0. Take the difference between two leg will gives the value of swap.\\
+The swap rate is to equal the floating leg and the fixed leg, by setting
+\subsection{bootstrapping and interpolation}
+The problem with the libor rate is the directed observation of libor rate is only for maturities up to a year,to built zero curve of libor, one can directly take the eurodollar future to built 2 year zero curve, and sometimes trader will use swap curve to built further data.\\
+Bootstrapping technique is in following ways, first extract the zero coupon rate from the zero coupon bond price within one year. Secondly, use a linear cubic interpolation method to draw a continuous zero-rate curve. Third step is use the one year information calculate the one year discount factor, then calculate the 1 year + t zero rate, like 1 year and 2 month, 1 year and 9 month, then interpolate one year and two year zero rate to get a full diagram of the zero rate. \\
+
+\subsection{MBS}
+{\bf Mortgage-Backed Securities}
+
+Ownership of an MBS entitles one to the cash flows of a mortgage
+pool (a collection of individual mortgages).
+
+Important terms
+
+1) Prepayment models: Models we use to estimate future cash flows of
+a bond rather than scheduled cash flows
+
+2) The PSA model (The Public Securities Association) The benchmark
+model for estimating prepayments.
+
+3) CPR (Conditional Prepayment Rate). CPR is the proportion of the
+remaining mortgage balance thats is prepaid each month both quoted
+annualized.
+
+4) SMM (Single-Monthly Mortality Rate): $(1-(1-CPR))^1/12$.
+
+
+Estimated monthly prepayment is
+
+Montly payment= SMM$\times$ [Beg. of Month balance-Sched. prin. for
+month].
+
+In the PSA (100\%) model, CPR depends on the maturity of the
+mortgages. In particular,
+
+\begin{eqnarray}
+  t<=30 &,& CPR =0.06\times t/30\\
+  t> 30&,& CPR =0.06
+\end{eqnarray}
+
+Notice that monthly mortality rates are lower when the mortgage is
+less than 30 months old.  Mortgages are prepaid less early in their
+lives. CPR is also a function of the difference between the current
+rate on the mortgage contract and the going rate for new mortgages
+(refinancing). Also in summer months, homeowners often move, sell
+the collateral and payoff their existing mortgages
+
+There are variations of the PSA prepay model. In the 150\% (50\%)PSA
+model CPR is simply 1.5 (0.5) times the CPR of the PSA 100\% model.
+
+{\bf MBS Pricing and Quoting}
+
+The prices of an MBS are quoted as a percentage of the underlying
+mortgage balance. The mortgage balance at time-t, $F_t$ is quoted as
+a proportion of the original balance. This is called the pool factor
+$pf_t= F_t/F_0$.
+
+Suppose an MBS backed by a collateral pool originally worth \$100M,
+a current $p_f$ of 0.92 and quoted at 95-16 (-16 is 16/30=50 cents)
+would have a market value of \$87.86.
+
+$F_t=pf_t\times F_0$ means that $F_t=0.92\times100M=92M$ so that the
+market value of the MBS is $0.9950\times92 =87.86$.
+
+MBS values are sensitive to interest rates in two ways: First the
+discount rates change second the distribution of cashflows change.
+If rates fall, discount rates are lower and cash flows are earlier
+since people prepay; both effects increase the value of the MBS. if
+rates increase, discount rates are higher and cash flows are later;
+both effects decrease the value of the MBS. Because of this double
+sensitivity MBS prices are more sensitive to interest rates than
+corporates.
+
+There are other factors that effect prepayments:
+
+1) Housing turnover: Homeowners often prepay when they move.
+
+2) Credit Curing: It takes time for a prepay rates in mortgages in a
+mortgage pool to converge to their long term values because improved
+credit or increased collateral prices allow better rates or larger
+loans more early on in the life of a loan.\\
+\subsection{Interest Rate}
+\begin{centering}
+\em {Interest rate Model recap\\}
+\end{centering}
+equilibrium model family such as Vasicek and CIR model. Vasicek model is the first model use risk neutral pricing method to do research on interest rate. It is a mean-reverting process, and if we make some change to this model, it will be identical to the autoregressive process(AR(1) process). The key finding of this model is when interest rate is normal distributed, it could be cause a problem for interest rate to be negative, so CIR model which is a improve a vasicek model, it implement square root to the diffusion term. it builds a general state of economic, the equilibrium  state. That is implied by the model.\\
+But the problem for equilibrium  model is that, it only focus on describe the state of economics, means the shape of yield curve, but ignore the dynamics of yield curve. People introduce new family of model called no arbitrage model.
+including various model, hull white, bdt etc, the key characteristic is that no arbitrage model can modeling the dynamics of yield curve, for instance, the hull white model able to fit today's term structure to the interest rate. And the most interesting model is the HJM model, which is a forward rate model. It turns outs a first model try to modeling the entire curve. It is a no arbitrage model, so ideally in terms of calibration, we must choose some asset class which have the bid-ask spread as small as possible. But it is a forward rate means you are sitting today, look at 3 month up to a year in the future. So it is increasing diffcult to calibrate. calibration can be various parameters, like the volatility of forward rate. for short term we can choose treasurey instruments, for middle term
+we can choose on the run instruments.But at long term, it is very hard to find something have good liquidity, and also it is relatively easy to blow.because HJM does not specify rate to be always positive.\\
+\section{Math Part}
+\subsection{normal distribution}
+\begin{centering}
+\em{Mathematics prepared for fixed income interview\\}
+\end{centering}
+Normal distribution is widely used in most quant finance related area. If two normal distribution are indepedent
+we can find two useful property $a\times N(\mu, \sigma^2)+b=N(a\mu+b,a^2\sigma^2)$ and $aN(\mu_1,\sigma^2)+bM(\mu_2
+,\sigma_2^2)=Normal(a\mu_1+b\mu_2,a^2\sigma_1^2+b^2\sigma_2^2)$ M and N are both indepedent normal distributed random number.\\
+To testing the normality, there are two methods, one is JB test, another is QQ-plot. JB test is combine skewness and kurtnoss to measure the accuracy of normality, and it follows chi-square distribution. \\
+To do that, we first need to discuss the kurtnoss and skewness.skewness is a way describe the summary of the distribution, it should be equal to 0, because normal distribution is symmetry distribution. The formula for skewness is $s=\frac{\frac{1}{n}\sum {(x_i-\bar{x})}^3}{(\sigma)^3}$ and kurtsoss is $s=\frac{\frac{1}{n}\sum {(x_i-\bar{x})}^4}{(\sigma)^4}$\\
+If skewness is positive, that means, the distribution is to the right side of the central, and if the skewness is negative, that means to the left side of the mean. Kurt should be equal to 3, if it is greater than 3, that means distribution have a higher peak, otherwise the peak is very flat.
+
+\begin{centering}
+\em {Sum of random variable\\}
+\end{centering}
+If the sum of two independent random variable is normal distributed, then their sum is also normally distributed.
+$$
+X\sim N(\mu_X,\sigma^2_X) \\
+Y\sim N(\mu_Y,\sigma^2_Y)\\
+Z=X+Y\\
+Z \sim N(\mu_X+\mu_Y,\sigma^2_X+\sigma^2_Y)
+$$\\
+This properity holds only for indepenent normal distributed, and may also hold for chi-square distribution. For student T, this properity not holds.\\
+Let us say if X,Y are standard normal distributed, with the correlation $\rho$, what is the variance for the $W=X+Y$
+The variance is $Var(W)=\sqrt{\sigma_X^2+\sigma_Y^2+2\times\rho\sigma_X\sigma_Y}$\\
+Two dimensional multivariate normal distribution case:\\
+$$ \Sigma=
+\begin{pmatrix}
+  \sigma_1^2 & \sigma_1\sigma_2\rho  \\
+  \rho\sigma_1\sigma_2  &\sigma_2^2    \\
+ \end{pmatrix}$$\\
+ Let
+ A=
+ $$
+ \begin{pmatrix}
+ \sigma_1 & 0     \\
+ \rho\sigma_2 & \sqrt{1-\rho^2}\sigma_2\\
+ \end{pmatrix} $$\\
+ we have $AA^T=\Sigma$, that is called cholesky decompostion. Performing Cholesky decomposition of a correlation matrix requires the matrix to be positive semidefinite.
+\subsection{Moment generating function}
+details is in\url{http://www.le.ac.uk/users/dsgp1/COURSES/MATHSTAT/6normgf.pdf}\\
+sample questions like: $E(W^N)$ details also see green book P91\\
+
+\subsection{central limit theorem}
+Details is in \url{http://zh.wikipedia.org/wiki/%E6%AD%A3%E6%80%81%E5%88%86%E5%B8%83}
+
+Limiting distribution of the centered and scaled sum of an iid sequence random variables is a normal distribution if common distribution of the random variables has finite variance.\\
+There is a very important property in normal distribution, that is under some condition, the mean distribution of large random variable will be like normal distribution. That means, we can use normal distribution to approximate the normal distribution.\\
+{\bf Two important distribution is binomal distribution and possion distribution}\\
+For binomial distribution $bin(n,p)$, is n is relatively large and when P is roughly 0.5, is approximately normal. mean of normal now is $\mu=np$ and variance is $\Sigma=np(1-p)$\\
+Another one is possion, when sample is large and $\lambda$ will be approximately equal to the mean of normal, and possion have same mean variance, so the variance of normal is also $\lambda$.\\
+{\bf WIKIPEDIA also listed some important distributions:}
+$Y \sim \chi_{\nu}^2$ is chi-square with $\nu$ degree of freedom, if $Y = \sum_{k=1}^{\nu} X_k^2$, and $X_1 \sim N(0,1)$, $X_2 \sim N(0,1)$ is two independent normal distribution.\\
+Cauchy distribution $Y \sim \mathrm{Cauchy}(\mu = 0, \theta = 1)$, if $Y = X_1/X_2$ and $X_1 \sim N(0,1)$, $X_2 \sim N(0,1)$ is two iid normal.\\
+Lognormal is $Y \sim \mbox{Log-N}(\mu, \sigma^2)$, if $Y = e^X$ and $X \sim N(\mu, \sigma^2)$.\\
+\begin{centering}
+\em {sample quesion\\}
+\end{centering}
+You have 100 coins, if you throw them and get 60 head, what is the probability>\\
+Sol: If probability is 0.5, and is large number sample say 100, we can use normal distribution to approximate the binomial distribution, since binomial distribution calculate probability is not realistic in the interview because computing  diffculty. Calculate the mean of this binomial distribution $np=100*0.5=50$ and variance is $np(1-p)=25$, use $z=(x-\mu)/\sigma=2$ and then $1-\phi(z)=1-prb(2)$, since 68 percent is move 1 standard deviation $\mu + z\sigma$ or $\mu -z\sigma$, pecentive is 1, and 95 percent is 2,so the probability on two tail is 5 percent, then each tail is 2.5 percent. Details see this plot
+\url{http://www.oswego.edu/~srp/stats/6895997.htm}
+p
+\subsection{Time Series}
+\begin{centering}
+\em {Time Series Model recap\\}
+\end{centering}
+GARCH(1,1) model is the standard model describe the volatility. It is a mean-reverting process, which is consistent with volatility should be mean reverting. and it is a autoregressive process, that means it must be depends on the previous observation. it is a emprical model without any theory behind. We can take expectation to get the long term mean. it can be calibrated use maxim likelihood estimation. and it must be holds for the constrain $\alpha + \beta >0$, this constrain is based on the covariance stationary, which means the convariance should not be change over time, and ewma model is not in the same case.\\
+GARCH model is try to model the heterrosdasticity, unlike the OLS try to modify this error. \\
+autoregressive process.\\
+\subsection{GARCH model}
+The draw back of garch model is it is very hard to tell the lag order of garch model, and it only tells you there is a shock of the volatility, but doesnt tell you whether or not it is a good sign or bad sign, so it only tells you in the level domain.\\
+GARCH Model with leverage effect:
+\begin{equation}
+\sigma^2_{t+1}=\omega+\alpha*R_t^2+\alpha*\theta*I_t*R_t^2+\beta*\sigma_t^2
+\end{equation}
+$I_t$ is a indicator function, if t day's return is negative then the value is 1 and zero otherwise.
+\begin{equation}
+    I_t=
+    \begin{cases}
+      1, & \text{if}\ R_t \geq 1 \\
+      0, & \text{otherwise}
+    \end{cases}
+  \end{equation}\\
+Thus, $\alpha*\theta$ larger than 0 will capture the leverage effect,that is also called GJR GARCH model.
+MACD is the most simply monmentum strategy, it is follows a trend trading rule. I design a time window, use the long term moving average minus the short term moving average. if it is positive, I long the stock if it is negative i short the stock.
+Martingale That is, the conditional expected value of the next observation, given all the past observations, is equal to the last observation. \\
+
+%%%%% pca part
+\subsection{PCA}
+\begin{centering}
+\em {PCA decomposing the yield curve\\}
+\end{centering}
+PCA is a way to reducing the dimension of matrix data and subtract the key elements of the dataset. If we put the math meaning of PCA, that means it project the data into a orgthonized lower dimension space, that can be done by matrix production, and at the mean time, try to max the variance of those data set. It turns out become a optimization problem, which can be done by largrange mutipiler. After that, we found the vector and matrix has the nice form as eigen vector and eigen value for the orginal data set. In other words, we take the covariance matrix for data set and then calculate the eigen value and eigen vector of the matrix, and it should be not correlated, since it procect into a orthogionzed space. And we can calculate the propotion can be explained by the various compoents, usually the top 3 componment will explain the 99\%  of the variance. For the yield curve case, it clearly shows the linear combination of the 3 components can explain the dynamics of the yield curve.    If we plot those components, each will corresponding the factor in yield curve, level slope and curvature of the yield curve.\\
+{\bf Some math behind PCA}
+Detail is coming from this video \url{http://www.youtube.com/watch?v=68ZJojshJ_U}
+We define the PCA definition in the previous part. Let us see the math form of PCA analysis. Vector projection in math form is $e^T(x-\bar(x))$. $s$ is the unit vector on various dimension, we try to find the dimension space can maxium the variance of our information. Projection is a way to reduce the dimension, but we also want to keep as much variation as possible. $x-\bar x $ means first take the average of all the information, then project the information into the mean. The variance of the information after projection is
+ $$\sigma^2=\frac{1}{n}\sum\limits_{i=1}^n (e^T(x_i-\bar x))^2$$ \\
+ The mean of the information project is 0, because the projection of mean value is 0.
+
+\begin{equation}
+\begin{aligned}
+\sigma^2=\frac{1}{n}\sum\limits_{i=1}^n (e^T(x_i-\bar x))^2\\
+=\frac{1}{n}\sum\limits_{i=1}^n e^T(x_i-\bar x) (e^T(x_i-\bar x))^T\\
+=\frac{1}{n}\sum\limits_{i=1}^n e^T(x_i-\bar x)e(x_i-\bar x)^T\\
+=e^T\frac{1}{n}\sum\limits_{i=1}^n (x_i-\bar x)(x_i-\bar x)^T e\\
+=e^T\Sigma e
+\end{aligned}
+\end{equation}\\
+$\Sigma$ is the covariance matrix. To max the variance, we need fine the $e$ that can max the $\Sigma$. Now the problem becomes $e=\arg\max e^T\Sigma e, e^Te=1$, it can be solved use largrange mutliplier.\\
+Larange Function: $$f(e,\lambda)= e^T\Sigma e +\lambda(1-e^Te)$$
+\begin{equation}
+\begin{aligned}
+\frac{\partial f}{\partial e}=2\Sigma e-2\lambda e=0 \\
+\Sigma e=\lambda e
+\end{aligned}
+\end{equation}\\
+And if we take partial derivative respect to $\lambda$, it will gives the boundary condition $e^Te=1$.
+Therefore, it is all equivalent to find the largest eigenvalue $\lambda 1$ and the largest eigenvector $e1$
+The second principal component is  using the second largest eigenvalue corresponding the second largest eigenvector.
+Thus, the first component  explains 95.26,and the first three eigenvectors of the covariance matrix explain 99.88 of the total variation in the data.
+This suggest that the effective dimension of the space of yield curves could be three and any of the yield
+curves from our data set can be described by a linear combination of the first three loadings, while the
+relative error being very small.
+As a check of the result, we compute the covariance matrix of PC. The variances of cov(PC) should
+be equal to the Eigenvalues and the covariances should be 0 (aside from rounding errors) since the
+Principal Components have to be uncorrelated.\\
+
+\subsection{Regression}
+{\bf Regression Analysis Method}\\
+Assumptions of regression:\\
+Assumption is based on the OLS \url{http://en.wikibooks.org/wiki/Econometric_Theory/Assumptions_of_Classical_Linear_Regression_Model#Normally_Distributed_Errors}
+OLS is the Best linear unbiased estimation: error term are no Heteroskedasticity which means they have constance variance, and no serial correlation, that means $corr(u_i,u_j|x_i,x_j)=0$, and it is normal distributed with 0 mean and $\sigma$ standard deviation.\\
+Unbiased estimate means the expectation of the paramter is equals to the true estimator,$E(\hat{a})=a$ and $E(\hat{b})=b$.\\
+Speciafically, we have\\
+ 1)predictor X is not correlated with other variable(muticolineearity), expectation of error term is 0, and error term is normal IID, and cant be autocorrelated. The variance of the error term is constant, that is called homoscedasticity. The slope coefficient is calculated by $\frac{cov(X,Y)}{Var(X)}$, a very wellknown trading startegy is use regression analysis to trading on the error term. Error term can be treat as the information available in the market. Error can be used as a trading signal.\\
+2)if the variance of error term is not constant, that is called Heteroskedasticity. it is as a result of the a large outlier in the sample , especially when sample size is very low.white test is a way to find the relation between error term and other predicator.It is take square residuasl regress against the predictors. And obtain the $R^2$, run likehood ratio test test $R^2$ is too large, there are Heteroskedasticity
+WLS weighted least square can be helpful to modify this issue.
+To testing the autocorrelation, we can also use DW test to examine. We can also to make a scatter plot of error term to check the randomness. \\
+3)For muticolineararity, we can use PCA to eliminate the muticolinearity.It happens when $r^2$ is significant, but each variable is not significant. $R^2$ adjusted is adjust $R^2$ by the degree of freedom. \\
+
+4)Gauss Markov theorem said thar $\beta=(X'X)' X'Y$ is the best linear unbiased estimator.\\
+5) T test is testing b=0, Ftest is testing wheteher or not each coeeficient is equal to 0.F-test is one tail test, and t-test is two tail test. p value is a probability, most time if it is less than 0.05, it is significantt.
+p-value depends on the alternative hypothesis, e.g., one sided or two sided (This is not explicitly stated in
+many definitions). And another thing is, it depends on the realization of the samples, i.e., the test statistic.
+\subsection{regression based trading method}
+First get two significant correlated time series, use one regress on the other, and generate one estimated time series use regression $E(Y|X)=a+b*x$, and plotting the error term. We did trading on error term. $error=Y-E(Y|X)$
+
+
+
+
+
+\subsection{Finite difference}
+{\bf Finite Difference method}\\
+It is a way to numerically solve PDE such as BS model. It is based on Taylor series expansion, it have implicit finite difference, which is solve by going forward. And the explicit finite difference which can be approximately solve by going backward. explicit finite difference is similar to trinomial tree. Finite difference can be price path dependent option with no more than two dimension space like Barrier option etc, for higher dimension like basket option, simulation is the better way \\
+Based on Taylor expansion$f(S,t+\Delta t)=f(S,t)+\frac{\partial f(S,t)}{\partial t}\Delta t+O$, if we do some algebra the derivative can be expressed as
+ $\frac{\partial f(S,t)}{\partial t}=\frac{f(S.t+\Delta t)-f(t,S)}{\Delta t}$, define the increment of time as i, and the increment of stock price as j, we can rewrite as $\frac{\partial f(S,t)}{\partial t}=\frac{f_{i+1,j}-f_{i,j}}{\Delta t} $ as the forward difference. Backward difference define as $\frac{\partial f(S,t)}{\partial t}=\frac{f_{i,j}-f_{i-1,j}}{\Delta t} $, central difference as $\frac{\partial f(S,t)}{\partial t}=\frac{f_{i+1,j}-f_{i-1,j}}{2\Delta t}$, the difference for second order derivative is $$ \frac{\partial^2 f(S,t)}{\partial S^2}=\left(\frac{f_{i,j+1}-f_{i,j}}{\Delta S}-\frac{f_{i,j}-f_{i,j-1}}{\Delta S}\right)/(\Delta S)=\frac{f_{i,j+1}-2f{i,j}+f_{i,j-1}}{(\Delta S)p^2}$$
+
+
+\subsection {Positive definite matrix}
+Positive definite matrix is only holds when a nonzero vector Z and a n by b matrix M $Z'*Z*M>0$, have a positive eigen value, and has a positive determine, and the  submatirx also have a postive detremine. Correlation matrix is positive semi-definite matrix.
+determine is calculated as $\det(A) = \sum_{j=1}^n (-1)^{i+j} a_{i,j} M_{i,j} = \sum_{i=1}^n (-1)^{i+j} a_{i,j} M_{i,j}$, Calculating det(''A'') by means of that formula is referred to as expanding the determinant along a row or column.\\\\
+For the example
+$A = \begin{bmatrix}-2&2&-3\\
+-1& 1& 3\\
+2 &0 &-1\end{bmatrix} \,,$, $\det(A)=(-1)^{1+2}\cdot 2 \cdot \det \begin{bmatrix}-1&3\\ 2 &-1\end{bmatrix} + (-1)^{2+2}\cdot 1 \cdot \det \begin{bmatrix}-2&-3\\ 2&-1\end{bmatrix} + (-1)^{3+2}\cdot 0 \cdot \det \begin{bmatrix}-2&-3\\ -1&3\end{bmatrix}$\\
+Determine for each submatrix must also be greater than 0. Sample interview question is in Xinfeng's Green Book Linear Algebra chapter.\\
+
+\subsection{prosperity of correlation matrix}
+Covariance matrix have the following characteristic, it is symmerical, so the transpose is itself, the diagonal element must be positive, and the positive semidefinite propertity such that $X^T\Sigma X>0$, and the determine of each submatrix should be positive, as well as the determinant is positive too.\\
+{\bf generated corrrelated random normal variable}
+First generate Z from mutivariate normal random number generator $Z \sim MN(0,I)$,I is n by n identity matrix, and do the cholesky decomposition $chol(\Sigma)=C$, $\Sigma$ is a n by n variance covariance matrix, and C is n by m matrix, last step is $ MVN(0,C^TC) \sim C^T Z$.\\P
+
+{\bf How do you generate normal random variables sample with correlation $\rho$}?\\
+Sol:generate $Z_1$ and $Z_2$ from standard normal iid, $Z_1 \sim N(0,1)$, and $Corr(Z_1,Z_2)=0$,let $X_1=Z_1$ and $X_2=\rho Z_1+\sqrt{1-\rho^2} Z_2$, the the correlation between$X_1$ and $X_2$ is:\\
+$$
+Corr(X_1,X_2)=Corr(Z_1,\rho Z_1+\sqrt{1-\rho^2} Z_2)=
+Corr(Z_1,\rho Z_1)+\sqrt{1-\rho^2} Corr(Z_1,Z_2)=\rho Var(Z_1)=\rho
+$$
+Based on Xinfeng zhou, let $x_1=z_1$, and $x_2=\rho z_1+\sqrt{1-\rho^2} z_2$, and it is easy to show that $var(z_1)=1$, $cov(z1,z2)=0$ and
+$$
+var(ax+by)=a^2var(x)+b^2var(y)+2ab*cov(x,y)
+$$
+so we have:
+$$
+var(x_2)=var(\rho z_1+\sqrt{1-\rho^2} z_2) \\
+=\rho^2 var(z_1)+(1-\rho^2) var(z_2)+cov(z1,z2)*2*\rho*\sqrt{1-\rho^2} \\
+=1
+$$
+
+$$
+cov(x_1,x_2)=cov(z_1,\rho z_1+\sqrt{1-\rho^2} z_2)=cov(z_1,\rho z_1)+cov(z_1,\sqrt{1-\rho^2} z_2)=\rho
+$$
+Because $corr(ax_1,x_2)=a corr(x_1,x_2)$ and  $corr(x+u,y)=corr(x,y)+corr(u,y)$.
+
+This properity holds because $corr(x+y,z)=corr(x,z)+corr(y,z)$ also $corr(z_1,pz_2)=p*corr(z_1,z_2)$. Therefore, we can generate two correlated random number from a two iid standard random number.\\
+If two random variable above method works, if generate high dimension correlated random variable, cholesky decomposition must be used. $X=\mu +R^T Z$\\
+Suppose, $A=\begin{bmatrix} 1 & p \\ p & 1 \end{bmatrix}$, and $A=R^T R$, after cholesky decomposition $R=\begin{bmatrix} 1 & 0 \\ p & p\sqrt{1-p^2} \end{bmatrix}$, use $X=\mu +R^T Z$ will get the matrix form.\\
+\subsection{Correlation matrix sample interview question}
+{\em find the correlation of three random variable with the covariance matrix}
+$$
+\begin{pmatrix}
+1 & 0.36 & -1.44 \\
+0.36 & 4 & 0.80  \\
+-1.44 & 0.80 & 9
+\end{pmatrix}
+$$
+Let this matrix be the covariance matrirx $\Sigma_x$, if $\Omega_x$ is the correlation matrix, then \\
+ $$
+ \Sigma_x=
+\begin{pmatrix}
+\sigma_1 & 0 & 0 \\
+0 & \sigma_2 & 0 \\
+0 & 0 & \sigma_3
+\end{pmatrix}
+\Omega_X
+$$
+Therefore, rewrite the matrix as :\\
+$$
+\Omega_X =
+\begin{pmatrix}
+1/\sigma_1 & 0 & 0 \\
+0 & 1/\sigma_2 & 0 \\
+0 & 0 & 1/\sigma_3
+\end{pmatrix}
+\Sigma_x
+\begin{pmatrix}
+1/\sigma_1 & 0 & 0 \\
+0 & 1/\sigma_2 & 0 \\
+0 & 0 & 1/\sigma_3
+\end{pmatrix}
+$$
+solve for $\sigma_1$ as 1, $\sigma_2$ as 2 and $\sigma_3$ as 3 and plug into the matrix, we can solve for the correlation matrix \\
+{\em how do you simulate stock price}\\
+Two ways can simulate the sample path:\\
+1: use the geometric brownian motion: $ds=\mu s dt+\sigma s dw$, by integrating between time interval, we can get:$S_{t_{j+1}}-S_{t_j}=\mu \int_{t_j}^{t_{j+1}} S_t dt+ \sigma \int_{t_j}^{t_{j+1}} S_t dW_t$ and$\int_{t_j}^{t_{j+1}} S_t dt=S_{t_j}(t_{j+1}-t_j)=S_t\delta t$ and $\int_{t_j}^{t_{j+1}} S_t dW_t = S_{tj}(W_{t_{j+1}}-W_{tj})= S_{tj} \sqrt{\delta t} Z_{j+1}$ because $W_{t_{j+1}}-W_{tj}$ is normal variable with 0 mean and variance $t_{j+1}-t_{j}=\delta t$, so if we can discretize the process as
+$S_{t_{j+1}}-S_{t_j}=\mu S_{tj}\delta t+\sigma S_{tj} \sqrt{\sigma t} Z_{j+1}$
+and rewrite as $S_{t_{j+1}}=S_{t_j}(1+\mu \sigma t+\sigma \sqrt{\delta t} Z_{j+1})$\\
+2: The drawback for the first method is there is some chance that the price path be negative, so use the lognormal distribution can help solve this problem $dlns=(\mu-\sigma^2/2)dt+\sigma dw_t$
+by integrating this equation, we can get
+$$
+ln(S_{t_{j+1}})-ln(S_{tj})=ln(\frac {S_{t_{j+1}}}{S_{tj}})=(\mu-\sigma^2/2)+\sigma \sqrt{\delta t}Z_{j+1}
+$$
+and therefore $S_{t_{j+1}}=S_{tj} exp( (\mu-\sigma^2/2)\delta t+\sigma \sqrt{\delta t})$
+\subsection{when correlation matrix is not psd}
+when the correlation matrix is not semi positive definite, then there is a problem.First have to figure out where is the problem coming from.   what that means is that the data are wrong (in the sense that they are not self consistent).  usually this is because of non stationarity of the data.  to overcome this problem, a model must be used to smooth out the data.  unit root test must be used to test for stationarity.  usually, when you take difference you get a more stationary time series.
+\subsection{simulation}
+{\bf Monte Carlo simulation preparation}\\
+{\em Lemma 5.1: This theorem is taken from Jian Sun's Credit derivative book. Define U as a uniform random variable under (0,1) interval. For any montonic increasing function F at (0,1) domain, define random variable $X=F^{-1}(U)$ then the cumulative density function of X is F.\\
+Prove as follows: $F_X$ is the CDF function of X=$F^{-1}(U)$
+$$
+F_X(x)=P(X \leq x)=P(F^{-1}(U)\leq x)\\
+$$
+Since F is a montonic increasing of x, the question $a\leq b$ is equal to the equation $F(a) \leq F(b)$
+similarly, we can write:\\
+$$
+F_X(x)=P(F(F^{-1}(U)) \leq F(x)) \\=P(U \leq F(x)) \\=F(x)
+$$
+} That shows the cdf of X is F.\\
+\subsection{Acception and reject method}
+in simulation method, one can generate a random number from a distribution use acception and rejection method.Assume you have the pdf of a distribution, but it is hard to get the cdf of the distribution.\\
+Suppose we wish to sample from a target distribution $f(x)$ that is difficult or impossible to sample from directly. Suppose also that we have a proposal distribution $g(x)$ from which we have a reasonable method of sampling (e.g. the uniform distribution). Then, if there is a constant$C|C*g(x)\leq f(x)$, the accepting ratio becomes $f(x)/cg(x)$, it ideally should be close to 1, that means the sample distribution is close to the target distribution, otherwise reject the sample. It follows $Pr(X|accept)=\frac{Prb(accept|X) Pr(X)}{Pr(accept)}$, according to beyles theorem $Pr(accept|X)=\frac{f(x)}{c g(x)}$,  $Pr(X)=g(x)$. $Pr(accpet)=\int_x Pr(accept|X)Pr(X) dx=\int_x \frac{f(x)}{cg(x)}g(x)dx=\frac{1}{c}\int_x f(x)dx=1/c$.Therefore,$Pr(X|Accept)=\frac{\frac{f(x)}{cg(x)}}{g(x)}{1/c}=f(x)$
+details see\url{http://www.columbia.edu/~ks20/4703-Sigman/4703-07-Notes-ARM.pdf}\\
+Procedure as follows:\\
+1.let $Y\sim g(y)$\\
+2.let $U\sim unif[0,1]$\\
+3.if $U\leq \frac{f(x)}{cg(x)}$ the X=Y;else reject and go to step 1\\
+{\bf Example Beta(2,1)}\\
+Beta(2,1) for $0\leq x \leq 1$, recall:$Beta(2,1)=2x$.\\
+ 1.choose $g(x)\sim unif[0,1]$, \\
+ 2.find c=2 because $\max\frac{f(x)}{g(x)}=2$, $g(x)$ is uniform pdf $\frac{1}{(b-a)}$ in [0,1],and $f(x)$ is 2.C is important because it helps a suitable c to apply this methods\\
+ 3.let $Y\sim unif[0,1]$\\
+ 4.let $U\sim unif[0,1]$\\
+ 5. if $U\leq \frac{2Y}{2}=Y$, then X=Y,else go to step 1\\
+ Matlab code:\\
+   \begin{verbatim}
+        j = 1;
+       while i < 1000
+           y = rand;
+           u = rand;
+           if u <= y
+               x(j) = y;
+               j = j + 1;
+               i = i + 1;
+           end
+       end
+       hist(x);
+   \end{verbatim}
+details is in \url{http://www.wikicoursenote.com/wiki/Acceptance-Rejection_Sampling}\\p
+\subsection{Variance reduction method in simulation}
+{\bf background knowledge in correlation}\\
+Correlation is only measure linear relation, zero correlation doesn't imply independent relation. Suppose a function $y=x^2$, they have dependence relation, but they have no correlation at all.\\
+{\bf Antithetic Variate method}\\
+The concept of correlation can be  used for variance reduction: the method of antithetic variates attempts to reduce variance by introducing negaptive correlation between pairs of observations.\\ For iid $X_1$ and $X_2$: $Var[(X_1+X_2)/2]=Var(X_1/2)+Var(X_2/2)+2cov(X_1/2,X_2/2)=1/4(Var(X_1)+Var(X_2)+2Cov(X_1,X_2))$ The covariance part is actually reduce the computation cost, and if $X_1$  and $X_2$ is negative correlated,then the variance is greatly reduced.\\
+For example one can write a peusdo matlab code for solving this problem:\\
+\begin{verbatim}
+for i=1:1000000%simulation 10000000 times
+error=randn(1);
+St(i)=S0exp(r-sigma^2/2)+sigma*sqrt(T)*error;
+St1(i)=S0exp(r-sigma^2/2)+sigma*sqrt(T)*(-error);
+end
+
+%get option price and antithetic variance price
+BSPrice=BSMCall();%black scholes option price
+crue_price=exp(-r*t)*mean(max(St-K,0))
+Antiprice=exp(-r*t)*mean(0.5*max(St-K,0)+0.5*max(St1-k,0))
+
+%price error
+Antierror=abs(Antiprice-BSPrice)/BSPrice
+Crudeerror=abs(crue_price-BSPrice)/BSPrice
+\end{verbatim}
+
+\subsection{Brownian motion interview question}
+{\bf Law of large number}\\
+The strong law of large number states that average of a large numbers iid integrable random variables converges almost surely to their mean\\
+{\bf weak law of large numbers}\\
+Weak form states that $\frac{S_n}{n} =\mu$ converges in probability\\
+{\bf Martingale}\\
+A stochastic process is called martingale must be adaptive, means measurable for all filtration time t, and integrable and more importantly $E[X_t|\mathcal{F}_s]=X_s$ almost sure for all s less t.In other words, martingale is a stochastic process give all the  $\mathcal{F}_s$ up to the current time s, the expectation at future time t $(t>s)$ is the current value $X_s$. And in Stochastic differential equation, martingale only have diffusion part with no drift term\\
+Martingale is widely applied in asset pricing theory, if market model is arbitrage free, it will have a risk neutral probability to ensure that the discounted asset process is a martingale.\\
+
+{\bf Model Validation Florida Team}\\
+{\bf Question 1}
+what is the variance of $X_t=\int_0^T W_t dW_t$
+solution:
+\begin{equation}
+\begin{aligned}
+E[\sum\limits_{j=0}^{n-1} W(t_j)(W(t_{j+1})-W(t_j))] = \sum\limits_{j=0}^{n-1} E[W(t_j)]E[W(t_{j+1})-W(t_j)]=0\\
+E[\sum\limits_{j=0}^{n-1}W(t_j)(W(t_{j+1})-W(t_j))]^2=\\
+\sum\limits_{j=0}^{n-1}E[W(t_j)]E[W(t_{j+1})-W(t_j)]^2+\\
+2\sum\limits_{j=1}^{n-1}\sum\limits_{i<j} E[W_j(W_{j+1}-W_j)W_i(W_{i+1}-W_i)]
+\end{aligned}
+\end{equation}\\
+The equation above is based on the general formula $[\sum\limits_{j=1}^{n} a_i]^2=\sum\limits_{j=1}^{n} a_i^2+2\sum\limits_{j=1}^{n}\sum\limits_{i<j}a_i a_j$, so the first term equals $E[\sum\limits_{j=0}^{n-1}W^2(t_j)]E[W(t_{j+1})-W(t_j)]^2=\sum\limits_{j=0}^{n-1}t_j(t_{j+1}-t_j)$ if switch to continuous form $\int_0^T tdt=\frac{T^2}{2}$, the second term is 0 because the increment of Brownian motion is
+independent, thus the expectation becomes 0 as well. Another way to solve is use the Ito Isometry prosperity.\\ \\
+{\bf Question2}
+\begin{equation}
+X_t=\int_0^T W_t dW_t
+\end{equation}\\
+Solution:\\
+This question can be solved use ito's lemma.First by guess $f(w,t)=\frac{1}{2} W_t^2$ then can be solved by
+
+\begin{equation}
+\begin{aligned}
+d(\frac{1}{2}W_t^2)=W_t dW_t+\frac{1}{2}dt\\
+\frac{1}{2}(W_t^2-W_0^2)=\int_0^T W_t dW_t+\frac{1}{2}t
+\end{aligned}
+\end{equation}
+
+If I let $W_0=0$, the equation will be
+$$X_t= \int_0^T W_tdW_t=\frac{1}{2}(W_t^2)-\frac{1}{2}t$$
+{\bf example 2}
+find the distribution of $X_t$ where, $X_t=\int_0^t sB_s\mathrm{d}s$\\p
+Solutions:\\
+Let $X_t = \int_0^t s B_s \mathrm{d}s$. The process $X_t$ is Gaussian as a linear functional of the Wiener process, which is Gaussian itself. Thus, the distribution of $X_t$ is determined by its two moments:
+$$
+    \mathbb{E}\left(X_t\right) \stackrel{\text{linearity}}{=} \int_0^t s \, \underbrace{\mathbb{E}\left(B_s\right)}_0 \, \mathrm{d}s  = 0
+$$
+The variance of $X_t$ is just the second moment:
+$$
+   Var(X_t)= \mathbb{E}\left(X_t^2\right) = \mathbb{E}\left( \int_0^t s_1 B_{s_1} \mathrm{d}s_1  \int_0^t s_2 B_{s_2} \mathrm{d}s_2 \right)  \stackrel{\text{linearity}}{=} \int_0^t \int_0^t s_1 s_2 \mathbb{E}\left(B_{s_1} B_{s_2}\right) \mathrm{d}s_1 \mathrm{d}s_2
+$$
+Since $\mathbb{E}\left(B_{s_1} B_{s_2}\right) = \min(s_1, s_2)$, we have:
+$$
+  Var(X_t)= \int_0^t \int_0^t s_1 s_2 \min(s_1, s_2) \mathrm{d}s_1 \mathrm{d}s_2 = \frac{2 t^5}{15}
+$$
+Calculate min value can be treat as cut the region by three points, 0, s1, and t. then integrate seperately will give the result.\\
+Thus, $X_t \sim \mathcal{N}\left(0, t^2 \sqrt{\frac{2 t}{15}} \right)$.
+\section{Regulation}
+\subsection{Dobb-Frank}
+Dodd-fran act is passed in 2010.\\
+(1) volker rule: prohibt the prop trading and non-bank financing investing is also have restrictions on prop trading, hedge fund and PE. \\
+(2) Transparency and accountability for derivative market: applied to all us banks and some bank have large impact on us economy\\
+\subsection{BASEL}
+basel 1 is for market risk and capital requirement. basel 2 is for internal operational risk and credit risk. basel 2.5 is securication and capital ratio. basel 3 is leverge constrain, liquidity funding requirement and risk buffer, add CVA into credit risk ratiing.
+\section{Credit risk}
+\subsection{ROC}
+{\bf ROC curve backtesting the moody kmv moody}\\
+in moody's kmv model, the major drawback is that is a single period model,
+it is hard to tell whether or not such a model is good or bad model.\\
+\includegraphics[width=1.77in,height=1.75in]{roc curve.jpg}\\
+
+Since no model is absolutely perfect and powerful, it is always possible that some small
+quantity of defaulted firms are erroneously evaluated to have higher DDs than some (also
+small quantity) survival firms. No matter how you cut the region, there
+are always some curve overfittings. \\
+To solve this problem, it is necessary to implement a method called roc method. the idea
+is as follows: We take DD for healthy company and default company, for default company,
+we assign a dummy variable 1 indicate for default, and 0 for healthy company.\\
+We rank the company by its DD, since DD and the default probability is a monontaic relation,
+all we care about is the ranking of DD. And we cut the DD for all default and healthy company
+into 10 different quartiles in a low to high order. For each group, we calculate the cumulative
+default and survival probability. Plotting the default probability and survival probability. \\
+\includegraphics[width=1.77in,height=1.75in]{roc result.jpg}\\
+If we plot default probability as true positive on axis, and survival probabilty as false positive on x-asix,
+if there is a 45 degree line, that means this model is useless can not figure out the misjudge of type I error
+and the type II error, which means model can not tell which company is fail to default and which one is fail to
+survive. \\
+Ideally, more concave the curve, more powerful the model will becomes. If is very concave that means, at lower DD quantitle, it have the higher true default company, and corresponding to almost 0 percent false positive(survival company). That is the intuition of the ROC approach. And we can do some numerical calculation to figure out the accuracy ratio, which is the area under the ROC curve. if the accuracy ratio is 0.5, that means this model is like
+a random walk, cant tell you anything, if it is between 0.5 and 1, that is better than random walk. if it is 1, that
+is a perfect model.\\
+
+\subsection{KMV}
+\begin{centering}
+\em{Merton model interview prepard}\\
+\end{centering}
+
+To discuss merton model, we first need to look at the accounting principles:
+\begin{equation}
+Asset=Liabilities+share holder's Equity
+\end{equation}
+To simplify our discussion, we assume debe value of company is all coming from a
+zero coupon bond marturies at time T. And the debt payoff depneds on the payoff
+F of the debt at Time T.\\\\
+For any company, the payoff of corporate bond can be decomposed into two parts:
+\begin{equation}
+r=r_d+r_e
+\end{equation}
+$r_d$ is so called risk free rate, $r_e$ is the credit risk enhancement of a company.For
+any company, $r_d$ is same, but $r_e$ is dependons on the credit quality of a company.
+In general, the higher the credit quality, the smaller the $r_d$, and the less debt financing
+cost.\\\\
+Let us think about the case of bankcurpcy of a company. The key assumption of merton model
+is that, if the total asset of company greater than debt amount F at time T. It is pretty
+enough for a company to pay back the debt and use the rest of the money pay for the shareholder.
+But at time T, if the value of total asset is less than the debt value F, company will go bankcrupcy.
+We use the following notation:
+\begin{equation}
+\begin{array}{l}
+\displaystyle V_t= \mbox {total asset at time t} \\
+\displaystyle E_t= \mbox{total equity value at time t}\\
+\displaystyle P_t= \mbox{price of risk free debt at time t}\\
+\displaystyle F= \mbox{face value of risk free bond}\\
+\end{array}
+\label{eq:1}
+\end{equation}
+
+The payoff for debt holder at time T is if $V_T$ \textgreater F. debt holder will get payoof F, otherwise
+debt holder can only get $V_T$.
+Share holder's payoff at time T is if $V_T$ \textgreater F, shareholder can only get $V_T$ --  F. Or the
+shareholder will get 0.\\
+If we write the following condition into equation, it can be expressed as:\\
+\section{Value at risk}
+VaR is the quantile on the physical distribution, assume the probability of your daily pnl is given, and loss is less than VaR in a given time period. For instance, the trading book is worth 1 million dollar and daily $VaR^{1\%}=10million$. That means we expecte to lose 10 million or more every 100 days or every 6 month. And it is not coherent measure because it doesnt have the subadditivity. Expected shortfall is conditonal on VaR breaks.$ES=E[Pnl|Pnl>VaR(p)]$.\\
+$VaR=\sqrt{VaR_1^2+2\rho_{12}VaR_1 VaR_2+VaR_2^2}$\\
+if correlation is 1, $VaR_p=VaR_1+VaR_2$\\
+if correlation is -1, Portflio VaR is the absolutely value two VaR sum toegther\\
+if  not correlated, $VaR_p=\sqrt{VaR_1^2+VaR_2^2}$\\
+
+{\bf sample question}
+How do you computes conditional VaR? Given a random variable X, X is iid standard normal, what is the expectation of X conditional on X greater than 0?\\
+Solution: See Xinfeng Zhou's book for details.\\
+\subsection{CVaR Expected shortall}
+Conditional VaR is $E(X|X>VaR)$. First define the truncated density function as if a continous random variable x has a pdf $f(x)$ and $a$ is a constant, then $f(x|x>a)=\frac{f(x)}{Prob(x>a)}$. \\
+$$
+Prob(x>a)=1-\phi(\frac{a-\mu}{\sigma})=1-\phi(\alpha)
+$$
+where $\phi$ is the normal cdf function, and $\alpha$ is the percentile. \\
+$E(x|x>a)=\int_0^{\infty} xf(x|x>a) dx$
+\subsection{General process for portfolio VaR calculation}
+Portfoilo VaR can be described as following process:first get market data from various resources, and calculate the return of those data, step 3 is very critical is about generate a covariance matrix $\Omega$ for portfilo. And next step is get the data of your position of portfoilo, generate a postion vector, use the position vector multiply by the covariance matrix $W^T\Omega W$. Therefore the $VaR_p=W^T\Omega W*N^{-1}(95 \%)$
+\subsection{Use PCA calculate the Portfoilo VaR}
+In the portfilo VaR, the matrix dimension for portfoilo is N by N, sometimes it could be becomes 500 by 500, so it is a huge computing cost in calculate the portfoilo covariance matrix. PCA is a way to reduce the matrix dimension, and use few factors as a representation of the entire matrix. PCA will gives a eigen vector, we need know the weight of each factor. Calculate the variance for each eigen value over the cumulative summation of eigen value, will gives the weight of factor.
+$$ VaR_{port}=W^T B_{N*k}  \Omega_{K*K}  B_{K*N}  W $$\\
+\subsection{backtesting VaR}
+First count the VaR violtion days, if use the $95\% $ VaR in a year should have about 15 days as VaR break days. Count the number of days for VaR break, if your profit and loss is greater than VaR, assign a variable 1, otherwise is 0. Defind the violation ratio as $VR=\frac{breakp}{E(break)}=\frac{u}{p W_T}$, p is the probability for event happens, and $W_T$ is the number of days in a year. If this ratio is greater than one, then VaR model is undereating, otherwise is overacting the risk.\\
+To test the significant of the backtesting performance, two method of backtesting is important. One is coverage test and the other is indepedent test. Coverage test is specify a bernoulli random variable :
+let n=0,1, and built null hypothesis $H_0: n \sim B(p)$ the density function becomes $ B(p)=(1-p)^{1-n}p^{n}$ where $p=\frac{u_1}{w}$ the likly hood ratio function will be mutiply them togther. And it becomes the form of $(1-p)^{u_0} p^{u_1}$ where $W=u_0+u_1$ $u_0$ is the number of days VaR doesnt break and $u_1$ is the days VaR break happens. The likelihood ratio is take the log of density over the true distribution, it should be chi-square distributed.\\
+{\em Indepent test:}\\
+Another method is check does the VaR break happens day after day. Define a transtion matrix for hitting VaR:
+$$
+\begin{pmatrix}
+a_{0,0} & a_{0,1} \\
+a_{1,0} & a_{1,1}
+\end{pmatrix}
+$$
+and in words it is like: $a_{0,0}$ is probability of not hitting t and t+1\\
+and $a_{0,1}$ is probability of not hitting t but hitting t+1\\
+and $a_{1,0}$ is probability of hitting t and not hitting t+1\\
+last one is probability of hitting both.\\
+We can simplify the transition matrix: if today there was a violation (i = 0), then tomorrow
+we have $a_{0,1}$ probability to have a hit, and  $1-pa_{0,1}$  to have no hit. So,
+$$
+\begin{pmatrix}
+1-a_{0,1} & a_{0,1} \\
+1-a_{1,1} & a_{1,1}
+\end{pmatrix}
+$$
+similar to previous test, we can define:\\
+$T_{0,0}:$ number of no hit today followed by a no hit (out of T days)\\
+$T_{0,1}:$ number of no hit today followed by a hit\\
+$T_{1,0}:$ number of hit today followed by a no hit\\
+$T_{1,1}:$ number of hit today followed by a hit\\
+and define estimator $\hat{a_{0,1}}=T_{0,1}/T_{0,0}+T_{0,1}$ and $\hat{a_{1,1}}=T_{1,1}/T_{1,0}+T_{1,1}$\\
+The sample likehood becomes:$L(\hat{A})=(1-\hat{a_{0,1}})^{T_{0,0}}(\hat{a_{0,1}})^{T_{0,1}}(1-\hat{a_{1,1}})^{T_{1,0}}(\hat{a_{1,1}})^{T_{1,1}}$\\
+and use likehood ratio test one more time will give the result\\
+There is one more method is combination of this two methods can did a better job for testing the VaR.
+\section{Equity Derivative}
+\subsection{arbitrage}
+By definiition, arbitrage is taking advantage of the mispricing to make profit. Generally there are three conditions of arbitrage.\\
+(1) the law of one price principle\\
+(2) two asset have indetical cash flow but does not trade at the same price\\
+(3)Asset have significant cost of carry\\
+Law of one price generally means that if two portfoilo have the identical value in the future, they should have identical value at present time.\\
+\subsection{difference between option and forward future}
+forward or future is design to reduce the risk, hedger can pay or receive the underlying. Option is provide the insurance, investor can protect themself against adverse price movement. Option have to pay the premium upfront. 2) option have limited loss while forward or future has unlimited loss.
+\subsection{forward and future}
+The main difference between a forward and future contract is:\\
+(1): Forward is trading at OTC, while future is on exchange\\
+(2): Future need do a daily settlement, forward is only settled at the end of day\\
+(3): Future have almost no credit risk, but forward have credit and counterparty risk embed. The major risk exposure for future is with exchange. \\
+(4): Theoricitally, future and forward have same value, if interest is constant\\
+(5)future have a series of delivery date, but forward is only one date.
+{\em when interest rate stochastic, forward and future which one is more expenesive}\\
+If it is constant, Forward and future is the same, equal to $F=Se^{rt}$. But if interest rate is random, future usually have more value than forward, because future is daily settled with the exchange. Hull's Book, future and forward chapter have detailed discussion. If interest rate is positive correlated with spot price, future will higher than forward, otherwise future is less than forward\\
+{\em why forward equation holds}\\
+Forward price equal to $F=S_0e^{(rt)}$, it is because the no arbitrage principle, if f is overvalued, and s is undervalued,long the spot short forward,profit is $F-S_0e^{rt}$ hull's book have a detailed example.
+\subsection{Binominal Tree}
+To derive the binominal tree method, first have to built a self-financing portfilo can replicate the payoff of the contngent claim $V$. The payoff is indentical to the target portfilo, it includes delta number of shares stock$\Delta_1$, and also $\Delta_2$ number of deposit goes to money market account.\\
+$$ V_0=e^{-rt}E(V)=e^{-rt}(PV^u+(1-P)V^d)$$ \\
+Which is take the expectation of portfolio value and discounted back to time 0\\
+$$
+V_T=
+\begin{cases}
+  \Delta_1S_u+\Delta_2e^{rT}=V^u\\ \Delta_1S_d+\Delta_2e^{rT}=V^d
+\end{cases}
+$$\\
+We can solve for the probability in this case,details in Jian Sun's book page 211.
+$$\mbox {Risk neutral probability of going up is $P=\frac{e^{rt}-d}{u-d}$},
+ \mbox{And going down is $1-p=\frac{u-e^{rt}}{u-d}$}$$ \\
+Detailed derivation as follows:\\
+First we have:\\
+\begin{equation}
+\begin{aligned}
+\Delta_1S_u+\Delta_2e^{rT}=V^u\\
+\Delta_1S_d+\Delta_2e^{rT}=V^d \\
+\Delta_1=\frac{V^u-V^d}{S(u-d)}\\
+\Delta_2=\frac{uV^d-dV^d}{(u-d)e^rT}\\
+ \end{aligned}
+\end{equation}
+Therefore, the value of portfilo at time 0 is:
+$$V_0=\frac{V^u-V^d}{S(u-d)}S+\frac{uV^d-dV^u}{(u-d)e^{rT}}=e^{-rt}\left(\frac{e^rt-d}{u-d}V^u+\frac{u-e^rt}{u-d}V^d\right)$$\\
+That is exactly how risk neutral probability coming from.\\
+{\bf Example of Binominal tree}\\
+The price of a stock is at 50, in 3 month, it either go to 47 or 52, with 0.5 probability, how much will you pay for the at the money put, assume no dividend and the interest rate is zero?\\
+{\bf Solution}\\
+Real world probaility is not helpful when pricing the option. We should calculate the risk-neutral probability and discount it back to calculate the option value. The up factor is $\frac{52}{50}$ and the down factor is $\frac{47}{50}$,put into equation we will get the risk neutral probability is 0.6 then option value can be calculated as $0*0.6+0.4*3=1.2$.\\
+The other intuitive method to solve this problem is through the foundation of risk neutral valuation:\\
+Built a risk neutral portfilo protection put by long put and holding stock $\delta=P+\Delta S$, $\Delta$ can be calculated by $\frac{P_{up}-P_{down}}{S_{up}-S_{down}}=\frac{0-3}{52-47}=-0.6$. The portfilo value becomes
+$\delta_T=P(T)+0.6S(T)=0+0.6\times 52=3+0.6\times 47=31.2$. We discounted the value at time 0, will get $\delta_0=P(0)+0.6S(0)$ Solve P(0) get 1.20.\\
+\subsection{Eu VS American time to maturity}
+If dividend payment holds, Eu call if the maturity is before the dividend payment date will have the higher value than maturity after the dividend payment because dividend will be taken from stock price.
+If no dividend, eu is same to american option. Notice time to maturity is not same as theta, theta is the passage of time, is the decay of time, but time to maturity is fixed, in other words, it is known at begining.\\
+For eu call option strike price same, the longer the maturity, the higher the price, assume no dividend payment. For eu put option, shorter maturity will have more revenue.\\
+The reason for long maturity, for american option long value is that long maturity will gives more optionality. And eu american call have the same value like american.
+\subsection{straddle}
+Straddle is portfilo of call and put with the same strike price, in that case,people are betting on direction of option, it is not a bet on volatility. The pay off is the absolute value of $s-k$.
+{\em why straddle is not a directly trading on volatility, but variance swap is directly trading}\\
+Because if you trade straddle, you are trading option, you have to take care delta, gamma, vega and theta, it requires hedging position, and will have huge transcation cost. So it is better use variance swap, which is tradding the difference between realized volatility and implied voaltility.\\
+\subsection{Longstaff model}
+For american option, unless there is a huge dividend payment or interest rate increasing significant, American call option have no optimal exercise opportunity, for pricing the american call option, use BS model can easy figure out the expected pay off. But for American put option, there are binominal tree and least square simulation method to do that, and also finite difference methods.The key of this algorithm is to optimally exercse and american option is equal to take the conditional expectation of continue holding. It can be summarize as several steps\\
+Step1: take the payoff at terminal time for every price path\\
+Step2: Calculate the holding value as the present value of option in next time point, discount the previous payoff into period 2 as the holding value. At time 2, we find the in the money path, the idea is use a regression $HV=a+bS+cS^2+v,v\sim N(0,\delta^2)$, it will gives parameters for regression, and use the paramter generate the expected holding value for time 2, and compare the $E(HV)$ with the exercise value with is the payoff of in the money path at time 2. By comparasion, it will tell the optimal exercise path.\\
+Step3:Going to t=1,we built the same matrix including Exercise value, holding value expected holding value and payoff. But the payoff matrix have to taking account the comparasition for previous path, if it is optimal to holding at one path in t=2, then path will be exercise at t=3, which will gives a payoff value. {\bf details is in FE CH11 Month Carlo simulation for american option pdf file} In t=1, we first find out the in the money path, then use the in the money path work on regression, get the parameters and generating the expected holding value, and compare with the exercise value. If exercise value is greater thane expected holding value, then the option values for those paths at t=1 are the exercise value, and set the subsequent time point for those path to be 0. For other path the value is just the holding value.\\
+{\bf Summary}\\
+In summary, find the payoff for last period,discount the holding value at last node to previous time, and find the in the money path for previous period, ,and use holding value calibrate the parameters for al in the money path, in polynominal fit approach. Use the parameter generate the Expected holding value for in the money path, and compare the exercise value, if exercise value greater than expected holding value, then that is a chance to exercise.Going back to one more time step,uss payoff and holding value for remaining path discount back get new holding value, run regression use holding value and stock ,get expected holding value for in the money path and compare with exercise price, do it untill time 1, either use holding value discounting or exercise value, discount them all back into time 0 and taking the average\\.
+\subsection{Volatility}
+Realized Volatility is annualized volatility, and it is the standard dervaition of the log return of underlying. $Std_{Realized}=\sqrt{\frac{252*\sum_{i=1}^{i} (R_i-\hat{R_i})}{n-1}}$, $R=ln(\frac{S_T}{S_0})$ where $\hat{r_i}$ is the mean of daily return.
+Implied Volatility is a forward looking method.
+\subsection{Local Volatility model}
+\subsection{Heston model}
+Volatility in BS model is constant, which create difficulty for pricing and hedging exotic derivative. Although people use BS model because the hedge ratio performance is very good.\\
+The most popular volatility model is raised by Heston in 1993,  Heston is use CIR process to model volatility. Because volatility has the mean reverting properity, is very similar to interest rate. Heston use $\rho$ to describe the correlation between price and volatility. Heston guess the equation is similar to BS model, and he use fourier transform solve for the PDE, by solving the characteristic euqation in probability in frequency domain. And time the inverse fourier transform into the time domain. So it is a very nice result.\\
+\subsection{Early exercise}
+American call option is never optimal to early exercise, because the time value of option is always positive, so if you exercise, you only get the intrinsic value. So, it is better off you sell the option.\\
+American put option is worth more when underlying is extremely low. That is the case when option have strike price 10 dollar and the stock price is 1 dollar, so it is better to make early exercise, rather than hold.
+\subsection{Asian American and European option}
+If all the parameters are the same, Asian option will have lower value because Asian option is the take the average prices. Changes in average prices are less volatile than change in daily price. Everything equal, lower volatility make asian option less expensive than plain vanilla options. American option generally is greater than european option, because of American option have one additional exercise option, can be exercised at any time.
+\subsection{greek}
+Enter a long call and decide to dynamically hedge the position to eliminate risk from stock flucturation. How to hedge that? If the stock price increase, how do you rebalance your hedge?\\
+One hedging method is through delta hedging, hedge $\Delta$ shares of stock, short $\delta$ shares of stock to made the portfilo delta neutral. Shorting delta shares of stock is very expensive, we have to borrow money from money market account, if option is under BS world, we can borrow $ke^{-rt}$ cash, and if the stock price goes up, we make money at the long call position, and we have to short more stock to rebalance the portflio. \\
+To hedge the curvature part of the stock, we have to doing gamma hedgeing use option.\\
+{\em Estimate the value of at the money option}\\
+Estimate the value of at the money call with small risk free rate and short maturity?\\
+Sol: When S=K, we have $C=S(N(d1)-e^{-r\tau}N(d2))$, we also can derive $N(d1)-N(d2)=\int_{d_2}^{d_1} \! \frac{1}{\sqrt{2\pi}} e^{-\frac{x^{2}}{2}}\, \mathrm{d}x$, if we do taylor series expanson, we can find that $N(x)\approx  N(0)+xN'(0)+\frac{x^2}{2}N''(0)$ and since $N(0)=1/2$, and $N'(x)=\frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}$ and $N'(0)=\frac{1}{\sqrt{2\pi}}$, also $N''(0)=0$. $N(x)\approx \frac{1}{2}+\frac{x}{\sqrt{2\pi}}$.At the money option, we plug in $d1-d2=\sigma\sqrt{\tau}$, we will eventually get $0.4\sigma\sqrt{\tau}$,details see dan's book on Page 191, or this link\url{http://quant.stackexchange.com/questions/1150/what-are-some-useful-approximations-to-the-black-scholes-formula}
+and if you take the derivative respect to stock price, $dc/ds$, it gives 0.4* time to maturity, will be roughly 0.5.\\
+{\em Gamma}\\Gamma for plain vanila option is always positive, because call option is concave function, and is high when option is at the money, since at the money, any small move in stock price will have a higher move on option price, delta is actually higher at there too. \\
+{\em theta} theta is always negative, because it is a time of decay. There are few very special case when theta is positive\\
+{\em sample question}: if you LONG call and delta hedge your position make your position in a delta neutral position, what happend to the gamma, and Profit and loss, is there any arbitrage opportunity?\\
+Sol: if a position is delta neutral, and gamma is always positive, then this portflio is long gamma, so whatever which side the portfilo move it is always positive. You can dynamic hedge to create this position by long call, and continous short hedging delta shares of stock, then only convexity left in your portfilo, since your stock only have linear effect. the shape of your portfilo is like $Y=x^2$.\\
+There is no arbitrage for this portfilo, since theta is time of decay, in a delta neutral portfilo, it must satisfy the BS PDE, and delta become 0, it becomes $\Theta+\frac{1}{2}\sigma^2S^2\Gamma=rv$, if interest is smaller, then that shows theta and gamma must be have the opposite sign, theta is time of decay.
+\subsection{Gamma theta and vega}
+Q1: Two call, all holds same except different time to maturity, which one have higher gamma?\\
+Ans: depends on where is the spot and strike, if it is at the money and near maturity gamma will be higher.\\
+Q2:Why gamma and theta have a negative sign?\\
+Gamma and theta in the BS differential Equation:\\
+$$
+\frac{\partial V}{\partial t} + \frac{1}{2}\sigma^2 S^2 \frac{\partial^2 V}{\partial S^2} + rS\frac{\partial V}{\partial S} - rV = 0
+$$
+if we let r=0, we ignore the interest rate, it becomes:\\
+$$
+\frac{\partial V}{\partial t} + \frac{1}{2}\sigma^2 S^2 \frac{\partial^2 V}{\partial S^2}  = 0
+$$
+then gamma and theta have to be a negative sign. Intuitively, if you long call, to hedge the risk, you have to sell stock. If price is increase, delta is increase, and you will borrow money to sell more stock. If delta is decrease, then you have to sell less stock, in other words buy stock to adjust delta. You always sell high and buy low. And since you long call, gamma is positive now, if theta is positive, then you make money as the time goes on, it is arbitrage. So, if theta and gamma both positive, it against the arbitrage principle. That is why theta and gamma have to be negative sign.\\
+\subsection{Theta}
+There are some extreme case, when it is deep in the money call with high dividend yield.\\
+An intuitive answer:
+1- if the put is enough ITM, you would want to exercise it immediately but you cannot because it is not expiry yet. It is more likely that at expiry you will end up with a smaller intrinsic value. So time-value is negative.\\
+2- if you have a call that is ITM on currency with high interest or a stock with high dividend, you would love to be able to exercise to get the dividend/high interest but you are forced to wait until expiry.\\
+ Theta of an option is also known as the option's time decay factor. It is the rate at which the premium declines as time passes away.\\
+
+\subsection{N(d1)}
+N(d1) is number of share you must hold to continue imbalanced portfolio that replicated the payoff of the call.
+$e^{-rt}KN(d2)$ is the value of the borrowing required in a continuously time.\\
+ $SN(d1)$ is the discounted value of your expected profit of owning the option. So your profit can not be greater than the stock price, that is why N(d1) is always less than 1. it need discount the profit less than the profit of stock, because your call option value can not be greater than the value of stock.
+
+\subsection{ATM Option}
+why is the delta of at the money option is 0.5, first at the money is not when s=k, is $s=ke^{(-rt)}$ because k is the boundary option value can never touch, option value can only have a discounted bound which is $ke^{(-rt)}$. delta is $N(d1)$, it only holds when d1=0, calculate d1=0 can gives delta=0.5\\
+An intutive explaination is taken from heard on street P109.\\
+Suppose you are shorting a call, you hold delta number of shares for hedging the short position, if call is deep in the money, then it will have higher chance to exercise the call. As a option writer, you have to deliver a stock, exact one shares of stock, so your delta is actually equal to the amount of stock account. If it is deep out of money, you don't have to deliver the call, so you don't hold anything. If it is ATM, then you not quire sure you should hold a share of stock for deliver, or hold nothing. So you hold 0.5 share of stock just in case.
+{\em  at the money N(d1)}: in the case of at the money N(d1), N(d1) is the probability asset as a numeriale, and if asset is in the money, it will have half chance go in the money, and half go at the money. so atm N(d1) is half.\\ Details also can be found from the video for columbia university coursera.\\
+\subsection{path dependent option}
+In taleb's book there are two types of path dependent option, one is memoryless path dependent option, another is the strong path dependent option. memoryless pathdenpedent option only depedent on one piece of memeory, a hard memory path depdenent option is totally dependent on the entire path. Barrier and lookback option are path depdenent option with mmoryless preoperity. Asian Option is strong path dependent option. For higher dimension, finite difference cant be used for solving this problem, but for lower dimension, like barrier option, lookback option can be solved by finite difference.
+
+\subsection{Dynamic hedging}
+Merton use a more general approach to derive BS model, he use derivative and underlying replicate a risk free portfilo, and argues that return of this portfolio over a short period of time is risk free. To remain riskless, the portfolio need readjusted frequently, rebalance portfolio very offten.\\
+
+Current value of option is approximately equal to the price of the stock minus the pure discount bond that matures at the same date as the option, where the face value is equal to the strike price of the option. \\
+If the expiration date is very far in the future, then the price of the option will be almost equal to the stock, since the current price of a bond pay exercise price at maturity will be very low. On the other hand, if the expiration date is very near, the option value will be S minus K or 0.\\
+{\bf sample question}\\
+for Eu Put option, same exercise price and longer maturity, what happens to the option price, assume no dividend\\
+Sol: For call, long maturity, will have higher value. But for put option, the smaller maturity the higher option price,because stock price can not be exceed to $Ke^{-rt}$, so smaller t will discount less value.\\
+To make money in both directions, we want a security to give a curved PnL, $PnL=(1/2)\Gamma (\Delta S^2)$. To get curvature, delta hedge away the linear part of a call option.Delta hedging for call option, is long a call and short delta shares of stock, make the portfilo delta neutral, in other words, hedging instantaneously. One way for make delta neutral position is long a deep in the money call, and long a deep in the money put, since delta of DITM call is close to 1, and for put is -1. So it create a delta neural position.That is, its overall value will not change for small changes in the price of its underlying instrument.
+\subsection{some sample interview question}
+{\bf Citi model validation London team Phone interview:}\\
+1.	What is the assumption of BS model\\
+2.	What happens in bs model if there is a transaction cost?\\
+Can you explain dynamic hedging? How does dynamic hedging applies in bs model? How do you price forward contract? Why forward rate is growing at risk free rate? How do you pricing exotic model? Is bs model enough? What if use heston model? Why heston model is good? Is there any other way in option pricing method? Why bs model is good? How do you know hedge ratio is good in blackscholes model?  What if in a no-arbitrage model arbitrage happens? Why people doing risk neutral valuation? K is close to S, how much share you should use to hedge? What is market completeness?\\
+3.	What is VaR? how many method you can do Value at risk calculation, do you know expected short fall? What is the advantage and disadvantage of VaR and Expected fall?  How do you backtesting VaR?\\\\
+{\bf SGCIB}
+1.What is option\\\\
+2. what is the difference between option and future\\\\
+3. what is realized volatility\\\\
+4 what is implied volatility…\\\\
+5. which numerical method are you use for calibrate implied volatility? Assume you have a model with closed form solution?\\\\
+6. assume you have a 3month out of money option on spx 500, if you plug in the realized volatility into your option pricing model, should the price be higher or lower than the fair value?\\\\
+7. Assume you have all the market variable, twitter is IPO today, have no option market, how do you price the twiter option?\\\\
+8. what is the twitter price today?\\\\
+9.a portfolio is been delta hedge, either go in the money or out of money, which case you make more money?\\\\
+\section{Credit derivative}
+\subsection{CDO}
+{\bf Understanding CDO}\\
+In the CDO pricing, there are two important factors are the main driver, one is the correlation, another is the tranche. For example, suppose that the portfolio underlying a CDO is composed of just two bonds, each with
+a face value of 100 dollar, and there is a 50 percent senior tranche and a 50 percent junior tranche. If we assume that there is no recovery in the event of default, then an investor in the senior tranche will lose principal only if both bonds default together. Consider two extreme case, default correlation is 1 and -1 in the bond portfolio.If it is one, either two company default together or both not default. Senior tranche will be effect only when they are both default. Instead, if the correlation is -1, then what happens is more likely one default, the other are not default, this will be benefit the senior tranche, which only loss all the principal when both company defaults, but it indeed hurt junior tranche, which only need one company default to wipe out the entire principal.\\
+The key points is : Low correlation is bad for investors in the equity tranche, and high correlation is bad for investors in the senior tranche.Moody has developed a measure called the diversity score,
+which is used to estimate the correlation in the portfolio of debt instruments underlying a CDO. The diversity
+score is essentially the number of uncorrelated debt instruments that would have the same distributions of losses
+as the actual (correlated) portfolio underlying the CDO.\\ \\
+{\em sample cdo interview question\\}
+4) Why is holding the equity piece of a CDO longing default correlation?\\
+Ans:\\
+Holding the senior tranche is a short position in correlation - that is easy to understand, because the probability of loss for the senior tranche is low as long as not too many assets in the pool default together in a bad credit environment. However, for the equity piece it seems that it will not actively benefit from high correlation. The way to think of it is to consider when credit environment is good, a high correlation ensures that no asset in the pool goes default.\\
+\subsection{Coupla}
+{\bf Coupla model}\\
+It start with one factor correlation model, $Y_i=a_iZ_m+\sqrt {1-a_i^2}Z_i$ $Z_m$ and $Z_i$ are iid standard normals.
+$Y_i$ is standard normal variable. $a_i$ is the correlation loadings. If we take the correlation of $Y_i$ and $Y_j$, we will find the answer is $a_i a_j$.
+$$
+corr(Y_i,Y_j)=cov(Y_i,Y_j)/\sqrt {(Var(Y_i)Var(Y_j))}=cov(Y_i,Y_j)=E(Y_iY_j)-E(Y_i)E(Y_j)=E(Y_i Y_j)
+$$\\
+Because $X_i$ and $X_j$ and $X_m$ are independent, so $E(Z_i,Z_j)=E(Z_i)E(Z_j)=0$ And $E(Z_m^2)=Var(Z_m)-E(Z_m)^2=1-0=1$
+$$
+corr(Y_i,Y_j)=E(Y_i,Y_j)=a_ia_jE(Z_m^2)=a_ia_j
+$$
+\section{Brain teaser}
+{\bf Sample frequent brainteaser questions}\\
+\subsection{coin question}
+On average, how many times do you have to flip a fair coin to get 3 heads in a roll?
+This question is from red book by Mike Joshi Q3.8.\\
+Ans:\\
+This question can be solved use binominal tree. start with the 2 head case. Use P denote the probability of head, 1-p as the tail.\\
+(1)if first toss is tail, the prob is 1-p, and the process will reset, also we use one step, so the expected number increment by 1. $(1-p)(1+E(x))$\\
+(2)if it is head after head then it will be $2p^2$, because it take a consecutive prob p, and with the number 2 steps\\
+(3)if it is head after tail, prob is p(1-p) and take 2 step, and will also reset the syep, which gives the $E(x)$ again, so it becomes $p(1-p)(2+E(x))$\\
+Therefore, $E(x)=(1-p)(1+E(x))+2p^2+p(1-p)(2+E(x))$, solve for E(x) we have $E(x)=(1+p)/p^2$ E(x) is 6\\
+if three heads the process as follows $E(X)=(1-P)(1+E(X))+3P^3+p^2(1-p)(3+E(x))+P(1-P)(2+E(X))$ solve for E(x), we get 14.\\
+\subsection{poke question}
+Assume you have 52 poke deck in the table, if you turn over them, what is the average time you see a ace?\\
+ANS:\\
+The key is all the poke are turn into backside of in the table. And you will have 4 aces and 48 others. xinfeng's book Page 95 show how to do his questions.\\
+\subsection{neighbour expectation problem}
+\url{http://math.stackexchange.com/questions/9522/expected-number-of-neighbors}
+\section{SQL}
+The best resource about sql is \url{http://www.1keydata.com/sql/sql.html} \\
+Primary key and foreign key: Primary key is the
+\section{summary of Jian Sun's Book}
+Interview question conversation: if you buy a call option and you want to hedge the risk, you should buy or sell stock. Buy stock, why?\\
+Because delta of call is positive, so you buy stock to hedge the risk. And why is positive\\
+Because delta is exactly N(d1), so it is positive. If don't use any math, call price is an increasing function of stock price, and delta is the slope rate of this curve.
+
+
+%simulation delta hedging local volatility risk neutral greeks VaR expected short fall
+%regression  finite difference greek letters cds coupla Time series  brain teaser questions
+\section{CDS}
+Basics of CDS, it is bascially a insurance contract where the buyer make quarter payment to the seller, based on one reference entity. The protection seller will collecting the spread and if credit event trigers, the seller will be make aution, basically a settlement either in cash or bond form. useaully will pay the the princiapl amonut mins the recovery rate.\\ There is corporate cds and sovergin cds contract. Sovergin CDS in euoper is banned for naked cds, in other words, if you are the buyer of the CDS, you have to own a underlying debt.\\
+Other than single name, CDS index is also traded in market, which is rolling every six months.
+{\bf some special terms}:\\
+1: naked CDS: CDS without any underlying asset, it is now banned for soverign CDS\\
+2: Credit curve:in each maturity we have a spread, and each point in the credit curve is represents value of expected spread payment (fee leg) will be equal to the present value of default(floating lag), and the payment on the floating leg happens only when defaults happens.\\
+$Spread*DF*P_sur+Accuaral=(1-R)*(P_{survt}-P_{survt-1})*DF$\\
+3: Risky annuity is the fee leg which is the present value of fee payment plus the accural part.\\
+\subsection{CDS big bang}
+It is basicallly try to make cds standard contract, it make convienent for the netting process. It include several changes like the change of deliver date, whenever trade actually happens, the effective date is the same. And all single name is traded at fixed coupon payment, there are 100 bps and 500 bps, and the upfront payment is exchanged, where 100 bps is the investment grade and 500 base points is the high yield cds. The recovery is also standardised to two possible values,again depending on the credit quality: 20 percent  or 40percent.\\
+Trading in CDS single name is very low frequency, people widely traded the index CDS.
+\subsection{Data sources}: It is OTC contract, it used be broker dealer quote the spread over the phone. Now both trades are did over electronic platform to confirm the transaction , for instance DTCC collect the data, and match the trade, transcation. And there are 14 dealers and brokers called G-14, mostly the top investment banks. DTCC data warehouse provided major data source for research purpose.\\
+Markit group is also gather, validate and quoted the daily CDS spread, by taking the average of CDS spread after elminated the outliers, and create the spread at the end of day, make sure everyday CDS spread have enough contributor.\\
+Other resources like Credit market analytics and fitch. CMA create spread by prase dealer's email, dealers including major investment bank, hedge fund etc,most of them are buyside firm. Fitch also have some dealer provide resources,mostly are sellside market maker.
+\subsection{Upfront payment}:For example, take a five-year CDS with a quoted spread of 450bps and a 500bps coupon. Since the buyer would be overpaying the seller if he paid 500bps, the seller compensates him on Day 1, to the tune of 264k (the fair value of the 50bps overpayment over five years according to the conventional model).
+
+
+
+
+
+\section{buddle sort}
+
+
+\end{document}
