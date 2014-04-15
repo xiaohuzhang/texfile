@@ -1,0 +1,122 @@
+	% LaTeX file for resume
+% This file uses the resume document class (res.cls)
+
+\documentclass{res}
+%\usepackage{helvetica} % uses helvetica postscript font (download helvetica.sty)
+%\usepackage{newcent}   % uses new century schoolbook postscript font
+\setlength{\textheight}{35 in} % increase text height to fit on 1-page
+\usepackage{latexsym}
+\begin{document}
+
+
+
+% Center the name over the entire width of resume:
+ \moveleft.5\hoffset\centerline{\large\bf Xiaohu ZHANG}
+% Draw a horizontal line the whole width of resume:
+ \moveleft\hoffset\vbox{\hrule width\resumewidth height  1 pt}\smallskip
+% address begins here
+% Again, the address lines must be centered over entire width of resume:
+ \moveleft.5\hoffset\centerline{33-51 73rd St,Apt6G,Jackson Heights, NY 11372}
+% \moveleft.5\hoffset\centerline{5635 Hempstead Rd Apt 10, Pittsburgh PA 15217p}
+
+%\moveleft.5\hoffset\centerline{2078 Treewood ln, San Jose 95132}
+\moveleft.5\hoffset\centerline{(347) 553-6064}
+\moveleft.5\hoffset\centerline{mr.zhangxiaohu@gmail.com}
+
+
+
+
+\begin{resume}
+\vspace{-28pt}	
+\section{\textsc{Summary}}	
+\begin{itemize}
+\item[$\Box$]  Hard working, Quick and eager Learner and Self-motivated.
+ \item[$\Box$] Strong knowledge in Equity and Fixed income Securities, Credit Derivative(CDS,CDO).
+ \item[$\Box$] Experienced with SAS,EXCEL,MATLAB,VBA,C\#,SQL,C++,Bloomberg,Linux,Python.
+ \item[$\Box$] Hands on experience in Risk Management, Financial modeling, Derivative Pricing.
+\end{itemize}
+\vspace{-15pt}	
+
+
+
+%\textbf{Nanjing University of Posts and Telecommunications} \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
+%Finished 30 college  credits in one year transfer to NYIT
+%%Major in Business Administration
+
+\section{EXPERIENCE}
+  \vspace{-13pt}	
+  \begin{tabbing}
+   \hspace{2.3in}\= \hspace{2.3in}\= \kill % set up two tab positions
+    {\bf Alcioun Capital} \> \it{New York, NY} \> ~~~~~~ Feb 2014-Present\\
+  % {\bf Alcioun Capital} \> \it{} \> ~~~~~~ Feb 2014-Present\\
+    \it Junior Analyst\\
+   \end{tabbing}\vspace{-20pt}
+\begin{itemize}
+%\item {\bf RMBS Research:} Research on RMBS deal, prepayment curve, deal structure,cash flow, analysed and forecasted loan factor such as  LTV, FICO, loan amount, coupon rate,CPR. Conduct scenario analysis for tranche cash flow and credit support.
+\item {\bf Market Risk Management:} Built Market Risk management models utilizing Historical,Analytic and Simulation methods.  Calculated Portfolio and individual VaR across various asset classes.  This includes both stress testing and back-testing VaR methods. Built derivative pricing GUI tools use C\#.
+\item {\bf Model Validation:} Implement and validate the model, and create weekly analysis summary reports,report DV01 Greeks and risk exposure use VBA, Excel. Reconcile trade data from various data sources including Bloomberg Factset use python.
+
+\end{itemize}
+\vspace{-20pt}	
+  \begin{tabbing}
+   \hspace{2.3in}\= \hspace{2.3in}\= \kill % set up two tab positions
+    {\bf Fordham University} \> \it{New York, NY} \> ~~~~~~ May 2012-Dec.2013\\
+    \it Research Assistant\\
+   \end{tabbing}
+   \vspace{-20pt}
+\begin{itemize}
+\item Developed high-quality proprietary data from  BLOOMBERG, Compustat, CRSP and other data sources.Use SAS SQL Cleaning 10GB data source into mutual fund  holding portfolio.
+\item Built Fama-French and Carhart's Factor Model.Measure mutual fund performance, ranking fund by flow and skill,executed data analysis to understand markets and  investment logic.
+\end{itemize}
+     \vspace{-20pt}
+   \begin{tabbing}
+   \hspace{2.3in}\= \hspace{2.3in}\= \kill % set up two tab positions
+    {\bf MC Asset Management} \>\ \ \it{Stamford, CT}     \>\ \ \ \ \ \ \ Summer 2012\\
+     % \it Summer Quantitative Research Analysis project\\
+     \it Summer Quantitative Research Analysis project\\
+	 \end{tabbing}
+\vspace{-20pt}      % suppress blank line after tabbing
+\begin{itemize}
+\item Worked on Capital Structure Arbitrage project,review academic literature, report daily work to Chief Risk Officer.
+\item Fitting Credit Default Swap curve,collecting data from CDX CDO,Variance Swap, Bootstrapping Default Probability use Matlab VBA and Bloomberg CDSW function.
+\item Determined model implied CDS spreads using CreditGrades, a structural credit model. Developed an arbitrage strategy using CDS contracts and equity.
+\item Back-testing Model,conduct CDS Daily PnL Attribution,test Regression based hedging performance use SAS and VBA.
+\end{itemize}
+\vspace{-10pt}
+
+
+\section{RELEVANT  SKILLS}
+%{\bf TRADING}
+ % \begin{itemize}
+%\item {\bf Trading Competition:} Member of the Fordham University trading team.  Maintaining trading book spreadsheets and research on Pair trading strategy across various asset class.
+% \end{itemize}
+ %\vspace{-5pt}
+{\bf RISK MANAGEMENT}
+\begin{itemize}
+\item{\bf Credit Risk:} Use Moody KMV model built Distance to Default index for 30 years data. Back-testing accuracy of KMV model use ROC (Receiver operating characteristic curve) in SAS. Modeling and calibrating credit default parameters including: PD, LGD, EAD.
+%\item{\bf FINANCIAL DISASTER:} Long Term Capital Management(LTCM) Case Study. Research LTCM's major trading strategies and risk management solutions.
+ \end{itemize}
+\vspace{-5pt}
+{\bf FINANCIAL MODELING}
+\begin{itemize}
+\item {\bf Econometrics Time Series Analysis:} : Forecasted volatility using different sophisticated GARCH family models such as NAGARCH, EGARCH, Leverage GARCH and their variants for US stock market data.
+\item {\bf Derivative Pricing:} Use VBA pricing derivatives via binomial and simulation method,Option Pricing and dynamic hedging under Black-Scholes framework,Greeks,risk neutral valuation.
+%\item {\bf Credit Derivative}:Built CDO loss distribution in recursive method, Gaussian Copula modeling.
+%\item {\bf OPTION PRICING:}
+\item {\bf Numerical Method:} American Option Valuation use Least Square Monte Carlo approach, Implied Volatility solver use numerical method, Finite difference method solve PDE, Heston model implementation in Monte Carlo and Analytical approach. Monte Carlo simulation with different variance reduction methods.
+\item {\bf Fixed Income:} Bootstrapping bond yield curve,interpolation method for yield curve construction,PCA
+    decompose yield curve,interest rate derivative modeling,DV01,duration.
+ %\item{\bf Interest Rate Derivative Modeling}: Hull White model calibration pricing swaption, pricing callable bond via BDT model.
+   \end{itemize}
+\vspace{-5pt}
+\section{\textsc{EDUCATION}}
+
+\textbf{Fordham University}  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ July 2011 - May 2013 \\
+Master of Science in Quantitative Finance,  FRM Level 1 Candidate \\
+%\textbf{New York Institute of Technology} \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 2007-May 2011 \\
+%Bachelor of Science in Finance   \ \  \textit{Cum Laude}
+%{\bf PROGRAMMING:}
+% Experienced with EXCEL,MATLAB,VBA,R,SAS,SQL,C++, Linux, Python(learning)
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\end{resume}
+\end{document}
