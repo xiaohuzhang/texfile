@@ -664,6 +664,7 @@ By definiition, arbitrage is taking advantage of the mispricing to make profit. 
 (2) two asset have indetical cash flow but does not trade at the same price\\
 (3)Asset have significant cost of carry\\
 Law of one price generally means that if two portfoilo have the identical value in the future, they should have identical value at present time.\\
+sample question about create arbitrage: first check the convexity of option, see if it against convexity of the put/call option. And by sell two option with two strike, and long one with middle strike to create arbitrage profit. \\ 
 \subsection{difference between option and forward future}
 forward or future is design to reduce the risk, hedger can pay or receive the underlying. Option is provide the insurance, investor can protect themself against adverse price movement. Option have to pay the premium upfront. 2) option have limited loss while forward or future has unlimited loss.
 \subsection{forward and future}
@@ -710,6 +711,10 @@ Real world probaility is not helpful when pricing the option. We should calculat
 The other intuitive method to solve this problem is through the foundation of risk neutral valuation:\\
 Built a risk neutral portfilo protection put by long put and holding stock $\delta=P+\Delta S$, $\Delta$ can be calculated by $\frac{P_{up}-P_{down}}{S_{up}-S_{down}}=\frac{0-3}{52-47}=-0.6$. The portfilo value becomes
 $\delta_T=P(T)+0.6S(T)=0+0.6\times 52=3+0.6\times 47=31.2$. We discounted the value at time 0, will get $\delta_0=P(0)+0.6S(0)$ Solve P(0) get 1.20.\\
+{\bf Numbers of time steps in Binomial tree}\\
+If we do a recomibination of tree nodes, then it will be a geometrical series, 1,2,4,6,8. Total number of steps is just take the summation of this series. which is $a_i=2^0+2^1+2^2+...+2^n$. let $S=\sum\limits_{i=0}^n 2^i$, and $2s=\sum\limits_{i=1}^{n+1} 2^i$, and $2s-s=s=2^{n+1}-2$\\
+Withing recombinating the tree node, it will be an airthmatic series summation:$\frac{(n+1)(n+2)}{2}$ \\
+
 \subsection{Eu VS American time to maturity}
 If dividend payment holds, Eu call if the maturity is before the dividend payment date will have the higher value than maturity after the dividend payment because dividend will be taken from stock price.
 If no dividend, eu is same to american option. Notice time to maturity is not same as theta, theta is the passage of time, is the decay of time, but time to maturity is fixed, in other words, it is known at begining.\\
@@ -729,6 +734,9 @@ In summary, find the payoff for last period,discount the holding value at last n
 \subsection{Volatility}
 Realized Volatility is annualized volatility, and it is the standard dervaition of the log return of underlying. $Std_{Realized}=\sqrt{\frac{252*\sum_{i=1}^{i} (R_i-\hat{R_i})}{n-1}}$, $R=ln(\frac{S_T}{S_0})$ where $\hat{r_i}$ is the mean of daily return.
 Implied Volatility is a forward looking method.
+\subsection{Hedging}
+sample: in which case hedging will create higher risk:\\
+when you have to buy some short dated option, to hedge them you have to say short stock, so when option expires, you still hedge the stock, therefore, risk is higher. \\
 \subsection{Local Volatility model}
 \subsection{Heston model}
 Volatility in BS model is constant, which create difficulty for pricing and hedging exotic derivative. Although people use BS model because the hedge ratio performance is very good.\\
@@ -738,7 +746,8 @@ American call option is never optimal to early exercise, because the time value 
 American put option is worth more when underlying is extremely low. That is the case when option have strike price 10 dollar and the stock price is 1 dollar, so it is better to make early exercise, rather than hold.
 \subsection{Asian American and European option}
 If all the parameters are the same, Asian option will have lower value because Asian option is the take the average prices. Changes in average prices are less volatile than change in daily price. Everything equal, lower volatility make asian option less expensive than plain vanilla options. American option generally is greater than european option, because of American option have one additional exercise option, can be exercised at any time.
-\subsection{greek}
+\subsection{greeks}
+A nice primer about greeks letters is \url{http://faculty.baruch.cuny.edu/lwu/9797/Lec7.pdf}
 Enter a long call and decide to dynamically hedge the position to eliminate risk from stock flucturation. How to hedge that? If the stock price increase, how do you rebalance your hedge?\\
 One hedging method is through delta hedging, hedge $\Delta$ shares of stock, short $\delta$ shares of stock to made the portfilo delta neutral. Shorting delta shares of stock is very expensive, we have to borrow money from money market account, if option is under BS world, we can borrow $ke^{-rt}$ cash, and if the stock price goes up, we make money at the long call position, and we have to short more stock to rebalance the portflio. \\
 To hedge the curvature part of the stock, we have to doing gamma hedgeing use option.\\
@@ -752,6 +761,7 @@ and if you take the derivative respect to stock price, $dc/ds$, it gives 0.4* ti
 Sol: if a position is delta neutral, and gamma is always positive, then this portflio is long gamma, so whatever which side the portfilo move it is always positive. You can dynamic hedge to create this position by long call, and continous short hedging delta shares of stock, then only convexity left in your portfilo, since your stock only have linear effect. the shape of your portfilo is like $Y=x^2$.\\
 There is no arbitrage for this portfilo, since theta is time of decay, in a delta neutral portfilo, it must satisfy the BS PDE, and delta become 0, it becomes $\Theta+\frac{1}{2}\sigma^2S^2\Gamma=rv$, if interest is smaller, then that shows theta and gamma must be have the opposite sign, theta is time of decay.
 \subsection{Gamma theta and vega}
+Gamma is largest for at the money, and it is hard to rebalance portfilo when gamma it is at the money. Because for in the money and out of the money, delta is almost 1 or 0,we almost sure to exercise or not exercise the option, it doesn't change so much, so gamma is smaller but for the out of the money and in the money gamma is very larger, because delta change so quick, either go in the money or out of money. and delta for at the money is around 0.5\\
 Q1: Two call, all holds same except different time to maturity, which one have higher gamma?\\
 Ans: depends on where is the spot and strike, if it is at the money and near maturity gamma will be higher.\\
 Q2:Why gamma and theta have a negative sign?\\
@@ -767,9 +777,13 @@ then gamma and theta have to be a negative sign. Intuitively, if you long call, 
 \subsection{Theta}
 There are some extreme case, when it is deep in the money call with high dividend yield.\\
 An intuitive answer:
-1- if the put is enough ITM, you would want to exercise it immediately but you cannot because it is not expiry yet. It is more likely that at expiry you will end up with a smaller intrinsic value. So time-value is negative.\\
+1- if the European put is enough ITM, you would want to exercise it immediately but you cannot because it is not expiry yet. It is more likely that at expiry you will end up with a smaller intrinsic value. So time-value is negative.\\
 2- if you have a call that is ITM on currency with high interest or a stock with high dividend, you would love to be able to exercise to get the dividend/high interest but you are forced to wait until expiry.\\
  Theta of an option is also known as the option's time decay factor. It is the rate at which the premium declines as time passes away.\\
+\subsection{Vega}
+Vega for put and call is the same, we ccan derive that from put call parity. $\frac{\partial p}{\partial \sigma}=\frac{\partial c}{\partial \sigma}$, and vega is corresponing to time, because volatility is corresponing to the $\sqrt{t}$, so vega with small time to maturity will usually have a smaller value. Vega is larger when at the money. Vega shape is like normal pdf function, at the money is in the middle, in the money and out of money is two tails. As volatility falls, vega falls for in the money and out of money option, and is largest for at the money, because at the money is like a peak.\\
+
+
 
 \subsection{N(d1)}
 N(d1) is number of share you must hold to continue imbalanced portfolio that replicated the payoff of the call.
