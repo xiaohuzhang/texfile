@@ -627,6 +627,7 @@ if  not correlated, $VaR_p=\sqrt{VaR_1^2+VaR_2^2}$\\
 How do you computes conditional VaR? Given a random variable X, X is iid standard normal, what is the expectation of X conditional on X greater than 0?\\
 Solution: See Xinfeng Zhou's book for details.\\
 \subsection{CVaR Expected shortall}
+see truncation density \url{http://people.stern.nyu.edu/wgreene/Lugano2013/Greene-Chapter-19.pdf}
 Conditional VaR is $E(X|X>VaR)$. First define the truncated density function as if a continous random variable x has a pdf $f(x)$ and $a$ is a constant, then $f(x|x>a)=\frac{f(x)}{Prob(x>a)}$. \\
 $$
 Prob(x>a)=1-\phi(\frac{a-\mu}{\sigma})=1-\phi(\alpha)
@@ -755,7 +756,7 @@ when you have to buy some short dated option, to hedge them you have to say shor
 Every factor is assume only change one factor, rest remain same. \\
 There are several factors need pay attention.\\
 $r_f$: interest rate increase, expected return of stock will be increase
-
+Time to maturity is not clear to Euopearn option, because of dividend date before and after the time to maturity.\\
 
 
 
