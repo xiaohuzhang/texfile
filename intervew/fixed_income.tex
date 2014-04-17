@@ -601,7 +601,21 @@ The payoff for debt holder at time T is if $V_T$ \textgreater F. debt holder wil
 debt holder can only get $V_T$.
 Share holder's payoff at time T is if $V_T$ \textgreater F, shareholder can only get $V_T$ --  F. Or the
 shareholder will get 0.\\
-If we write the following condition into equation, it can be expressed as:\\
+Draw back of merton model is that is a single period model, and kmv improvre this model into half of long term deb plus the short term debt.\\
+we can derive the merton model by following:\\
+assume the total value of the company is follow by a stochastic process: $dv=\mu Vdt+ \sigma_v Vdw$S where v is the value of the company, and we have the volatility of the company. so the  equity value of the company is :\\
+$E=VN(d_1)-e^{-rt}FN(d_2)$ where E is the market value of the ﬁrm’s equity, F is the face value of the ﬁrm’s debt, r is the instantaneous risk-free rate. Under merton model, the equity volatility can be derived as $\sigma_E=(\frac{V}{E}) \frac{\partial E}{\partial V}\sigma_V$ which is $ \sigma_E=(\frac{V}{E}) N(d_1)$, then solved two equation will give us the default probability which is N(d2). Volatility can derived from ito's lemma.\\
+\begin{equation}
+\begin{aligned}
+dE=\mu Edt+\sigma_E Edw\\
+\frac{dE}{E}=\mu dt+ \sigma_E dw\\
+\mbox{by using ito lemma:}  dE=E_vdv+\frac{1}{2}E_{vv}(dv)^2+E_tdt\\
+=E_v\sigma_v V dw+(\mbox{some dt term})dt\\
+\mbox{by matching the diffusion dw term:}\\
+E_v\sigma_v V=E \sigma_E\\
+\frac{\partial E}{\partial V} \sigma_v V=E \sigma_E
+\end{aligned}
+\end{equation}
 \section{Value at risk}
 VaR is the quantile on the physical distribution, assume the probability of your daily pnl is given, and loss is less than VaR in a given time period. For instance, the trading book is worth 1 million dollar and daily $VaR^{1\%}=10million$. That means we expecte to lose 10 million or more every 100 days or every 6 month. And it is not coherent measure because it doesnt have the subadditivity. Expected shortfall is conditonal on VaR breaks.$ES=E[Pnl|Pnl>VaR(p)]$.\\
 $VaR=\sqrt{VaR_1^2+2\rho_{12}VaR_1 VaR_2+VaR_2^2}$\\
@@ -664,7 +678,7 @@ By definiition, arbitrage is taking advantage of the mispricing to make profit. 
 (2) two asset have indetical cash flow but does not trade at the same price\\
 (3)Asset have significant cost of carry\\
 Law of one price generally means that if two portfoilo have the identical value in the future, they should have identical value at present time.\\
-sample question about create arbitrage: first check the convexity of option, see if it against convexity of the put/call option. And by sell two option with two strike, and long one with middle strike to create arbitrage profit. \\ 
+sample question about create arbitrage: first check the convexity of option, see if it against convexity of the put/call option. And by sell two option with two strike, and long one with middle strike to create arbitrage profit. \\
 \subsection{difference between option and forward future}
 forward or future is design to reduce the risk, hedger can pay or receive the underlying. Option is provide the insurance, investor can protect themself against adverse price movement. Option have to pay the premium upfront. 2) option have limited loss while forward or future has unlimited loss.
 \subsection{forward and future}
@@ -737,6 +751,19 @@ Implied Volatility is a forward looking method.
 \subsection{Hedging}
 sample: in which case hedging will create higher risk:\\
 when you have to buy some short dated option, to hedge them you have to say short stock, so when option expires, you still hedge the stock, therefore, risk is higher. \\
+\subsection{Option price factors}
+Every factor is assume only change one factor, rest remain same. \\
+There are several factors need pay attention.\\
+$r_f$: interest rate increase, expected return of stock will be increase
+
+
+
+
+
+
+
+
+
 \subsection{Local Volatility model}
 \subsection{Heston model}
 Volatility in BS model is constant, which create difficulty for pricing and hedging exotic derivative. Although people use BS model because the hedge ratio performance is very good.\\
